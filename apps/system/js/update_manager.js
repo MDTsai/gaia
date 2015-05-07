@@ -48,6 +48,9 @@ var UpdateManager = {
   downloadViaDataConnectionMessage: null,
   downloadDialogTitle: null,
   downloadDialogList: null,
+  updatesdownloadCancelDialog: null,
+  updatesdownloadCancelButton: null,
+  updatesdownloadCancelMessage:null,
   lastUpdatesAvailable: 0,
   _notificationTimeout: null,
 
@@ -93,6 +96,14 @@ var UpdateManager = {
       this.downloadViaDataConnectionDialog.querySelector('p');
     this.downloadViaDataConnectionTitle =
       this.downloadViaDataConnectionDialog.querySelector('h1');
+
+    this.updatesdownloadCancelDialog =
+      document.getElementById('updates-download-cancel-dialog');
+    this.updatesdownloadCancelButton =
+      document.getElementById('updates-alert-cancel-btn');
+    this.updatesdownloadCancelButton.onclick = this.cancelUpdatesAlert.bind(this);
+    this.updatesdownloadCancelMessage =
+      document.getElementById('updates-download-out-of-memory');
 
     this.container.onclick = this.containerClicked.bind(this);
     this.laterButton.onclick = this.cancelPrompt.bind(this);
@@ -259,6 +270,10 @@ var UpdateManager = {
         self.showPrompt3GAdditionalCostIfNeeded();
       }
     });
+  },
+
+  cancelUpdatesAlert: function um_cancelUpdatesAlert() {
+    this.updatesdownloadCancelDialog.classList.remove('visible');
   },
 
   containerClicked: function um_containerClicker() {
@@ -761,6 +776,17 @@ var UpdateManager = {
       this.systemUpdatable.size = detail.size;
       this.systemUpdatable.rememberKnownUpdate();
       this.addToUpdatesQueue(this.systemUpdatable);
+    }
+
+    if (detail.type && detail.type === 'update-error' &&
+        detail.statusText && detail.statusText === 'file-too-big') {
+      var self = this;
+      var size = detail.size;
+      self.updatesdownloadCancelDialog.classList.add('visible');
+      var _localize = navigator.mozL10n.setAttributes;
+      _localize(self.updatesdownloadCancelMessage, 'updates-download-out-of-memory', {
+        size: this._humanizeSize(size)
+      });
     }
   },
 

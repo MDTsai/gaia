@@ -109,6 +109,16 @@
   }
 }
 
+#updates-download-cancel-dialog {
+  padding-top: 3.5rem;
+  display: none;
+}
+
+#updates-download-cancel-dialog.visible {
+  display: inline-block;
+  pointer-events: auto;
+}
+
 #updates-viaDataConnection-dialog.visible,
 #updates-download-dialog.visible {
   display: inline-block;
