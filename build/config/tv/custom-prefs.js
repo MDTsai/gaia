@@ -12,3 +12,7 @@ user_pref('dom.meta-viewport.enabled', false);
 user_pref('dom.presentation.enabled', true);
 user_pref('devtools.useragent.device_type', 'TV');
 user_pref('dom.apps.customization.enabled', false);
+
+// Remote control URL. Gecko loads its required static file in this app.
+user_pref("remotecontrol.client_page.prepath", "app://remote-control-client.gaiamobile.org");
+user_pref("remotecontrol.client_page.blacklist", "/client.html,/pairing.html");
